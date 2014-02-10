@@ -1,0 +1,4 @@
+modal
+=====
+
+jQuery Modal plguin.
