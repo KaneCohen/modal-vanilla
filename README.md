@@ -99,3 +99,28 @@ var myModal = new Modal({
 }).show();
 myModal.hide();
 ````
+
+## Events
+
+Modal Vanilla uses standard node.js EventEmitter and therefore supports such  
+event as: 'on', 'once', 'removeAllListeners', 'removeListener'.
+
+For more details on EventEmitter, please check official [https://nodejs.org/api/events.html](documentaion page).  
+Available events are:
+
+| Event Type | Description |
+| ---------- | ----------- |
+| show | This event fires immidiately after `.show()` method is called. |
+| shown | This event is fired after Modal has been fully shown - with default options that would happen after 300ms. |
+| hide | This event fires immidately after `.hide()` method is called and immidiately after user dismisses modal via button or keydown.  |
+| hidden | This event is fired after modal has been completely hidden. |
+| dismiss | This event fires immidiately after user clicks either on one of the buttons tat can close modal, on close element in the header, on backdrop if it is set to default behavior and after user hits "Esc" on the keyboard. |
+
+````js
+var myModal = new Modal({
+  content: 'My Custom Content'
+});
+myModal.on('show', function(myModal, event) {
+  // Do something before we start showing modal.
+})
+````
