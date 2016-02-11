@@ -16,11 +16,9 @@ const _defaults = Object.freeze({
   appendTo: 'body',     // DOM element to which constructed Modal will be appended.
   backdrop: true,       // Boolean or 'static', Show Modal backdrop bocking content.
   keyboard: true,       // Close modal on esc key.
-  fixed: false,         // ?? Use fixed vs non-fixed style for Modal.
-  className: null,      // Custom class for the Modal.
-  title: 'Dialog',      // Title content. By default will use a string.
-  header: null,         // Show header content.
-  content: null,        // Content eiter string or an HTML element.
+  title: 'Dialog',      // Content of the title in the constructed dialog.
+  header: true,         // Show header content.
+  content: false,       // Either string or an HTML element.
   footer: true,         // Footer content. By default will use buttons.
   buttons: null,
   headerClose: true,    // Show close button in the header.
@@ -291,7 +289,7 @@ class Modal extends EventEmitter {
 
     if (o.header) {
       if (o.title.nodeName) {
-        html.header.appendChild(o.title);
+        html.header.innerHTML = o.title.outerHTML;
       } else if (typeof o.title === 'string') {
         html.header.innerHTML = `<h4 class="modal-title">${o.title}</h4>`;
       }
@@ -317,15 +315,21 @@ class Modal extends EventEmitter {
 
     if (o.footer) {
       html.footer.innerHTML = '';
-      o.buttons.forEach((button) => {
-        let el = document.createElement('button');
-        data(el, 'button', button);
-        el.innerHTML = button.text;
-        for (let j of Object.keys(button.attr)) {
-          el.setAttribute(j, button.attr[j]);
-        }
-        html.footer.appendChild(el);
-      });
+      if (o.footer.nodeName) {
+        html.footer.ineerHTML = o.footer.outerHTML;
+      } else if (typeof o.footer === 'string') {
+        html.footer.innerHTML = o.footer;
+      } else {
+        o.buttons.forEach((button) => {
+          let el = document.createElement('button');
+          data(el, 'button', button);
+          el.innerHTML = button.text;
+          for (let j of Object.keys(button.attr)) {
+            el.setAttribute(j, button.attr[j]);
+          }
+          html.footer.appendChild(el);
+        });
+      }
     }
 
   }
