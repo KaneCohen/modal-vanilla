@@ -23,5 +23,6 @@
   "scripts": {
     "lint": "eslint src",
     "build": "node webpack.config.js"
-  }
+  },
+  "main": "src/modal.js"
 }
