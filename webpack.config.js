@@ -8,7 +8,8 @@ var config = {
   output: {
     path: __dirname + '/dist',
     publicPath: '',
-    filename: 'modal.js'
+    filename: 'modal.min.js',
+    library: 'Modal'
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({minimize: true})

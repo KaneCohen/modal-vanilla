@@ -16,7 +16,7 @@ const _defaults = Object.freeze({
   appendTo: 'body',     // DOM element to which constructed Modal will be appended.
   backdrop: true,       // Boolean or 'static', Show Modal backdrop bocking content.
   keyboard: true,       // Close modal on esc key.
-  title: 'Dialog',      // Content of the title in the constructed dialog.
+  title: false,         // Content of the title in the constructed dialog.
   header: true,         // Show header content.
   content: false,       // Either string or an HTML element.
   footer: true,         // Footer content. By default will use buttons.
@@ -156,6 +156,7 @@ class Modal extends EventEmitter {
       _defaults,
       {
         title:  message,
+        content: false,
         construct: true,
         buttons: _buttons.alert
       },
@@ -170,6 +171,7 @@ class Modal extends EventEmitter {
       _defaults,
       {
         title:  question,
+        content: false,
         construct: true,
         buttons: _buttons.confirm
       },
@@ -245,10 +247,6 @@ class Modal extends EventEmitter {
     html.footer = build(t.footer);
     html.container.classList.add(animate);
 
-    html.content.appendChild(html.header);
-    html.content.appendChild(html.body);
-    html.content.appendChild(html.footer);
-
     this._setHeader();
     this._setContent();
     this._setFooter();
@@ -287,12 +285,13 @@ class Modal extends EventEmitter {
     let html = this._html;
     let o = this._options;
 
-    if (o.header) {
+    if ((o.header && ! html.header.nodeName) || o.title) {
       if (o.title.nodeName) {
         html.header.innerHTML = o.title.outerHTML;
       } else if (typeof o.title === 'string') {
         html.header.innerHTML = `<h4 class="modal-title">${o.title}</h4>`;
       }
+      html.content.appendChild(html.header);
     }
   }
 
@@ -306,6 +305,7 @@ class Modal extends EventEmitter {
       } else {
         html.body.innerHTML = o.content.outerHTML;
       }
+      html.content.appendChild(html.body);
     }
   }
 
@@ -330,6 +330,7 @@ class Modal extends EventEmitter {
           html.footer.appendChild(el);
         });
       }
+      html.content.appendChild(html.footer);
     }
 
   }
