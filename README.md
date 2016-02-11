@@ -11,6 +11,8 @@ it should be possible via Modal instance patching.
 
 View live [examples here](https://kanecohen.github.io/modal-vanilla).  
 
+![GIF demo](https://cloud.githubusercontent.com/assets/578455/12984169/9ee6515a-d0fd-11e5-92d7-8e3e8e57d144.gif)
+
 ## Usage
 
 ### Via JavaScript
