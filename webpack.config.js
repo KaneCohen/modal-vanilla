@@ -1,50 +1,65 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var config = {
-  debug: false,
-  entry: './src/modal',
-  target: 'web',
-  output: {
-    path: __dirname + '/dist',
-    publicPath: '',
-    filename: 'modal.min.js',
-    library: 'Modal'
+var targets = [
+  {
+    target: 'web',
+    output: {
+      path: __dirname + '/dist',
+      filename: 'modal.min.js',
+      library: 'Modal'
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({minimize: true})
+    ],
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({minimize: true})
-  ],
+  {
+    target: 'node',
+    output: {
+      path: __dirname + '/dist',
+      filename: 'modal.js'
+    }
+  }
+];
+
+var baseConfig = {
+  debug: false,
+  entry: './lib/modal',
   module: {
     loaders: [
       {
         test: /\.js$/,
-        include: path.join(__dirname, 'src'),
+        include: path.join(__dirname, 'lib'),
         loaders: ['babel', 'eslint']
       }
     ]
   }
 };
 
-webpack(config).run(function(err, stats) {
-  console.log('Generating minified bundle for production use via Webpack...');
+targets.forEach(function(target) {
+  var config = Object.assign({}, baseConfig, target);
 
-  if (err) {
-    console.log(err.bold);
-    return 1;
-  }
+  webpack(config).run(function(err, stats) {
+    console.log('Generating minified bundle for production use via Webpack...');
 
-  var jsonStats = stats.toJson();
+    if (err) {
+      console.log(err.bold);
+      return 1;
+    }
 
-  if (jsonStats.hasErrors) return jsonStats.errors.map(error => console.log(error));
+    var jsonStats = stats.toJson();
 
-  if (jsonStats.hasWarnings) {
-    console.log('Webpack generated the following warnings: ');
-    jsonStats.warnings.map(warning => console.log(warning));
-  }
+    if (jsonStats.hasErrors) return jsonStats.errors.map(error => console.log(error));
 
-  console.log('Webpack stats: ' + stats.toString());
+    if (jsonStats.hasWarnings) {
+      console.log('Webpack generated the following warnings: ');
+      jsonStats.warnings.map(warning => console.log(warning));
+    }
 
-  //if we got this far, the build succeeded.
-  console.log('Package has been compiled into /dist.');
-  return 0;
+    console.log('Webpack stats: ' + stats.toString());
+
+    //if we got this far, the build succeeded.
+    console.log('Package has been compiled into /dist.');
+    return 0;
+  });
 });

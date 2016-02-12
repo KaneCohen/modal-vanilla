@@ -1,6 +1,6 @@
 {
   "name": "modal-vanilla",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Vanilla JS Modal compatible with Bootstrap",
   "keywords": ["modal", "popup", "vanilla", "bootstrap"],
   "author": {
@@ -21,8 +21,9 @@
     "webpack": "1.12.11"
   },
   "scripts": {
-    "lint": "eslint src",
-    "build": "node webpack.config.js"
+    "lint": "eslint lib",
+    "build": "node webpack.config.js",
+    "prepublish": "node run build"
   },
-  "main": "src/modal.js"
+  "main": "dist/modal.js"
 }
