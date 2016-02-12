@@ -1,6 +1,6 @@
 /**
  * Vanilla JS Modal compatible with Bootstrap
- * version 0.2.2
+ * version 0.2.3
  * Kane Cohen [KaneCohen@gmail.com] | https://github.com/KaneCohen
  * @license
  */
