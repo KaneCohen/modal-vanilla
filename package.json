@@ -23,7 +23,7 @@
   "scripts": {
     "lint": "eslint lib",
     "build": "node webpack.config.js",
-    "prepublish": "node run build"
+    "prepublish": "npm run build"
   },
   "main": "dist/modal.js"
 }
