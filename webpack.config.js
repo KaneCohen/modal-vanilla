@@ -17,7 +17,8 @@ var targets = [
     target: 'node',
     output: {
       path: __dirname + '/dist',
-      filename: 'modal.js'
+      filename: 'modal.js',
+      libraryTarget: 'commonjs2'
     }
   }
 ];
