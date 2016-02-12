@@ -44,7 +44,7 @@ targets.forEach(function(target) {
     console.log('Generating minified bundle for production use via Webpack...');
 
     if (err) {
-      console.log(err.bold);
+      console.log(err);
       return 1;
     }
 
