@@ -50,11 +50,11 @@ targets.forEach(function(target) {
 
     var jsonStats = stats.toJson();
 
-    if (jsonStats.hasErrors) return jsonStats.errors.map(error => console.log(error));
+    if (jsonStats.hasErrors) return jsonStats.errors.map(function(error) { return console.log(error); });
 
     if (jsonStats.hasWarnings) {
       console.log('Webpack generated the following warnings: ');
-      jsonStats.warnings.map(warning => console.log(warning));
+      jsonStats.warnings.map(function(warning) { return console.log(warning); });
     }
 
     console.log('Webpack stats: ' + stats.toString());

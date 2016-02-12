@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.2.5 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.2.7 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -253,7 +253,7 @@ module.exports =
 	  }, {
 	    key: 'version',
 	    get: function get() {
-	      return '0.1.0';
+	      return '0.2.6';
 	    }
 	  }]);
 
