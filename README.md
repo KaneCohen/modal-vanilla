@@ -80,7 +80,7 @@ was fired via one of the buttons - specific button.
 | headerClose | boolean | true | Show close button in the header. |
 | construct | boolean | false | Force modal type - if set to `true` Modal would be constructed dynamically. |
 | transition | integer | 300 | How much time in ms it takes to show the modal. |
-| backdropTransition | integer | 150 | How muth time in ms it takes to show backdrop. |
+| backdropTransition | integer | 150 | How much time in ms it takes to show backdrop. |
 
 ## Methods
 
@@ -112,11 +112,11 @@ Available events are:
 
 | Event Type | Description |
 | ---------- | ----------- |
-| show | This event fires immidiately after `.show()` method is called. |
+| show | This event fires immediately after `.show()` method is called. |
 | shown | This event is fired after Modal has been fully shown - with default options that would happen after 300ms. |
-| hide | This event fires immidately after `.hide()` method is called and immidiately after user dismisses modal via button or keydown.  |
+| hide | This event fires ately after `.hide()` method is called and immediately after user dismisses modal via button or keydown.  |
 | hidden | This event is fired after modal has been completely hidden. |
-| dismiss | This event fires immidiately after user clicks either on one of the buttons tat can close modal, on close element in the header, on backdrop if it is set to default behavior and after user hits "Esc" on the keyboard. |
+| dismiss | This event fires iately after user clicks either on one of the buttons tat can close modal, on close element in the header, on backdrop if it is set to default behavior and after user hits "Esc" on the keyboard. |
 
 ````js
 var myModal = new Modal({
