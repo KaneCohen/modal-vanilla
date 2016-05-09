@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.2.9 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.2.10 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -554,7 +554,7 @@ module.exports =
 	      var html = this._html;
 	      var backCList = html.backdrop.classList;
 	      var contCList = html.container.classList;
-	      this.emit('beforeHide', this);
+	      this.emit('hide', this);
 
 	      backCList.remove('in');
 	      contCList.remove('in');
@@ -570,7 +570,7 @@ module.exports =
 	          html.container.remove();
 	        }
 	        _this4._visible = false;
-	        _this4.emit('hide', _this4);
+	        _this4.emit('hidden', _this4);
 	      }, this._options.transition);
 
 	      return this;
