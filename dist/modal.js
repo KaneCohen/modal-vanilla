@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.2.10 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.2.11 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -485,7 +485,7 @@ module.exports =
 
 	      var o = this._options;
 	      var html = this._html;
-	      this.emit('beforeShow', this);
+	      this.emit('show', this);
 
 	      this._checkScrollbar();
 	      this._setScrollbar();
@@ -507,7 +507,7 @@ module.exports =
 
 	        setTimeout(function () {
 	          _this2._visible = true;
-	          _this2.emit('show', _this2);
+	          _this2.emit('shown', _this2);
 	        }, o.transition);
 	      });
 
