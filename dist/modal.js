@@ -78,6 +78,7 @@ module.exports =
 	var _defaults = Object.freeze({
 	  el: null, // Existing DOM element that will be 'Modal-ized'.
 	  animate: true, // Show Modal using animation.
+	  animateClass: 'fade', //
 	  appendTo: 'body', // DOM element to which constructed Modal will be appended.
 	  backdrop: true, // Boolean or 'static', Show Modal backdrop bocking content.
 	  keyboard: true, // Close modal on esc key.
@@ -85,11 +86,11 @@ module.exports =
 	  header: true, // Show header content.
 	  content: false, // Either string or an HTML element.
 	  footer: true, // Footer content. By default will use buttons.
-	  buttons: null,
+	  buttons: null, //
 	  headerClose: true, // Show close button in the header.
 	  construct: false, // Creates new HTML with a given content.
-	  transition: 300,
-	  backdropTransition: 150
+	  transition: 300, //
+	  backdropTransition: 150 //
 	});
 
 	var _buttons = deepFreeze({
@@ -126,6 +127,16 @@ module.exports =
 	    }
 	  }]
 	});
+
+	var _templates = {
+	  container: '<div class="modal"></div>',
+	  dialog: '<div class="modal-dialog"></div>',
+	  content: '<div class="modal-content"></div>',
+	  header: '<div class="modal-header"></div>',
+	  body: '<div class="modal-body"></div>',
+	  footer: '<div class="modal-footer"></div>',
+	  backdrop: '<div class="modal-backdrop"></div>'
+	};
 
 	function deepFreeze(obj) {
 	  for (var k in obj) {
@@ -204,25 +215,7 @@ module.exports =
 	var Modal = (function (_EventEmitter) {
 	  _inherits(Modal, _EventEmitter);
 
-	  _createClass(Modal, [{
-	    key: '_buttons',
-	    get: function get() {
-	      return _buttons;
-	    }
-	  }, {
-	    key: '_templates',
-	    get: function get() {
-	      return {
-	        container: '<div class="modal"></div>',
-	        dialog: '<div class="modal-dialog"></div>',
-	        content: '<div class="modal-content"></div>',
-	        header: '<div class="modal-header"></div>',
-	        body: '<div class="modal-body"></div>',
-	        footer: '<div class="modal-footer"></div>',
-	        backdrop: '<div class="modal-backdrop"></div>'
-	      };
-	    }
-	  }], [{
+	  _createClass(Modal, null, [{
 	    key: 'alert',
 	    value: function alert(message) {
 	      var _options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -251,6 +244,21 @@ module.exports =
 	      return new Modal(options);
 	    }
 	  }, {
+	    key: 'templates',
+	    get: function get() {
+	      return Object.assign({}, _templates);
+	    }
+	  }, {
+	    key: 'buttons',
+	    get: function get() {
+	      return Object.assign({}, _buttons);
+	    }
+	  }, {
+	    key: 'options',
+	    get: function get() {
+	      return Object.assign({}, _defaults);
+	    }
+	  }, {
 	    key: 'version',
 	    get: function get() {
 	      return '0.2.6';
@@ -269,11 +277,12 @@ module.exports =
 	    this._html = {};
 	    this._handlers = {};
 	    this._visible = false;
-	    this._options = Object.assign({}, _defaults, options);
+	    this._options = Object.assign({}, Modal.options, options);
+	    this._templates = Object.assign({}, Modal.templates, options.templates || {});
 	    this._html.appendTo = document.querySelector(this._options.appendTo);
 
 	    if (this._options.buttons === null) {
-	      this._options.buttons = this._buttons.dialog;
+	      this._options.buttons = Modal.buttons.dialog;
 	    }
 
 	    if (this._options.el) {
@@ -303,7 +312,7 @@ module.exports =
 	      var html = this._html;
 	      var o = this._options;
 	      var t = this._templates;
-	      var animate = o.animate ? 'fade' : '';
+	      var animate = o.animate ? o.animateClass : false;
 
 	      html.container = build(t.container);
 	      html.dialog = build(t.dialog);
@@ -311,7 +320,7 @@ module.exports =
 	      html.header = build(t.header);
 	      html.body = build(t.body);
 	      html.footer = build(t.footer);
-	      html.container.classList.add(animate);
+	      if (animate) html.container.classList.add(animate);
 
 	      this._setHeader();
 	      this._setContent();
@@ -330,7 +339,7 @@ module.exports =
 	      var html = this._html;
 	      var o = this._options;
 
-	      if (this.el.classList.contains('fade')) {
+	      if (this.el.classList.contains(o.animateClass)) {
 	        o.animate = true;
 	      }
 
@@ -532,10 +541,11 @@ module.exports =
 
 	      var html = this._html;
 	      var t = this._templates;
-	      var animate = this._options.animate ? 'fade' : '';
+	      var o = this._options;
+	      var animate = o.animate ? o.animateClass : false;
 
 	      html.backdrop = build(t.backdrop);
-	      html.backdrop.classList.add(animate);
+	      if (animate) html.backdrop.classList.add(animate);
 	      html.appendTo.appendChild(html.backdrop);
 
 	      if (animate) html.backdrop.offsetWidth;
@@ -552,6 +562,7 @@ module.exports =
 	      var _this4 = this;
 
 	      var html = this._html;
+	      var o = this._options;
 	      var backCList = html.backdrop.classList;
 	      var contCList = html.container.classList;
 	      this.emit('hide', this);
@@ -564,14 +575,19 @@ module.exports =
 	      setTimeout(function () {
 	        document.body.classList.remove('modal-open');
 	        document.body.style.paddingRight = _this4.originalBodyPad;
+	      }, o.backdropTransition);
+
+	      setTimeout(function () {
 	        html.backdrop.remove();
 	        html.container.style.display = 'none';
-	        if (_this4._options.construct) {
+
+	        if (o.construct) {
 	          html.container.remove();
 	        }
+
 	        _this4._visible = false;
 	        _this4.emit('hidden', _this4);
-	      }, this._options.transition);
+	      }, o.transition);
 
 	      return this;
 	    }
