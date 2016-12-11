@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.3.1 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.3.2 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -212,6 +212,15 @@ module.exports =
 	  return width;
 	}
 
+	function getPath(node) {
+	  var nodes = [node];
+	  while (node.parentNode) {
+	    node = node.parentNode;
+	    nodes.push(node);
+	  }
+	  return nodes;
+	}
+
 	var Modal = (function (_EventEmitter) {
 	  _inherits(Modal, _EventEmitter);
 
@@ -275,7 +284,7 @@ module.exports =
 	    this.id = guid();
 	    this.el = null;
 	    this._html = {};
-	    this._handlers = {};
+	    this._events = {};
 	    this._visible = false;
 	    this._options = Object.assign({}, Modal.options, options);
 	    this._templates = Object.assign({}, Modal.templates, options.templates || {});
@@ -437,42 +446,45 @@ module.exports =
 	  }, {
 	    key: '_setEvents',
 	    value: function _setEvents() {
-	      var _this = this;
-
 	      var o = this._options;
 	      var html = this._html;
 
 	      if (o.backdrop === true) {
-	        this._handlers.keydownHandler = function (e) {
-	          return _this._handleKeydownEvent(e);
-	        };
-	        document.body.addEventListener('keydown', this._handlers.keydownHandler);
+	        this._events.keydownHandler = this._handleKeydownEvent.bind(this);
+	        document.body.addEventListener('keydown', this._events.keydownHandler);
 	      }
 
-	      this._handlers.clickHandler = function (e) {
-	        return _this._handleClickEvent(e);
-	      };
-	      html.container.addEventListener('click', this._handlers.clickHandler);
+	      this._events.clickHandler = this._handleClickEvent.bind(this);
+	      html.container.addEventListener('click', this._events.clickHandler);
 
-	      this._handlers.resizeHandler = function (e) {
-	        return _this._handleResizeEvent(e);
-	      };
-	      window.addEventListener('resize', this._handlers.resizeHandler);
+	      this._events.resizeHandler = this._handleResizeEvent.bind(this);
+	      window.addEventListener('resize', this._events.resizeHandler);
 	    }
 	  }, {
 	    key: '_handleClickEvent',
 	    value: function _handleClickEvent(e) {
-	      var html = this._html;
-	      if (e.target.getAttribute('data-dismiss') === 'modal') {
-	        this.emit('dismiss', this, e, data(e.target, 'button'));
-	        this.hide();
+	      var _this = this;
+
+	      var path = getPath(e.target);
+	      path.every(function (node) {
+	        if (node.tagName === 'HTML') {
+	          return false;
+	        }
+	        if (node.classList.contains('modal-content')) {
+	          return false;
+	        }
+	        if (node.getAttribute('data-dismiss') === 'modal') {
+	          _this.emit('dismiss', _this, e, data(e.target, 'button'));
+	          _this.hide();
+	          return false;
+	        }
+	        if (node.classList.contains('modal')) {
+	          _this.emit('dismiss', _this, e, null);
+	          _this.hide();
+	          return false;
+	        }
 	        return true;
-	      }
-	      if (e.target !== html.container) {
-	        return true;
-	      }
-	      this.emit('dismiss', this, e, null);
-	      this.hide();
+	      });
 	    }
 	  }, {
 	    key: '_handleKeydownEvent',
@@ -594,13 +606,13 @@ module.exports =
 	  }, {
 	    key: '_removeEvents',
 	    value: function _removeEvents() {
-	      if (this._handlers.keydownHandler) {
-	        document.body.removeEventListener('keydown', this._handlers.keydownHandler);
+	      if (this._events.keydownHandler) {
+	        document.body.removeEventListener('keydown', this._events.keydownHandler);
 	      }
 
-	      this._html.container.removeEventListener('click', this._handlers.clickHandler);
+	      this._html.container.removeEventListener('click', this._events.clickHandler);
 
-	      window.removeEventListener('resize', this._handlers.resizeHandler);
+	      window.removeEventListener('resize', this._events.resizeHandler);
 	    }
 	  }, {
 	    key: '_checkScrollbar',
