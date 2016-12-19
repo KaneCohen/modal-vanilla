@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.3.4 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.3.5 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -397,13 +397,15 @@ module.exports =
 	      var html = this._html;
 	      var o = this._options;
 
-	      if (o.content) {
+	      if (o.content && html.body) {
 	        if (typeof o.content === 'string') {
 	          html.body.innerHTML = o.content;
 	        } else {
 	          html.body.innerHTML = o.content.outerHTML;
 	        }
-	        html.content.appendChild(html.body);
+	        if (o.construct) {
+	          html.content.appendChild(html.body);
+	        }
 	      }
 	    }
 	  }, {
@@ -412,7 +414,7 @@ module.exports =
 	      var html = this._html;
 	      var o = this._options;
 
-	      if (o.footer) {
+	      if (o.footer && html.footer) {
 	        html.footer.innerHTML = '';
 	        if (o.footer.nodeName) {
 	          html.footer.ineerHTML = o.footer.outerHTML;
@@ -451,7 +453,9 @@ module.exports =
 	            html.footer.appendChild(el);
 	          });
 	        }
-	        html.content.appendChild(html.footer);
+	        if (o.construct) {
+	          html.content.appendChild(html.footer);
+	        }
 	      }
 	    }
 	  }, {
