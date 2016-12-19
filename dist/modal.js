@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.3.2 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.3.3 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -376,7 +376,7 @@ module.exports =
 	      var html = this._html;
 	      var o = this._options;
 
-	      if (o.header && !html.header.nodeName || o.title) {
+	      if (o.header && !html.header || o.title) {
 	        if (o.title.nodeName) {
 	          html.header.innerHTML = o.title.outerHTML;
 	        } else if (typeof o.title === 'string') {
@@ -545,6 +545,15 @@ module.exports =
 	      this._resize();
 
 	      return this;
+	    }
+	  }, {
+	    key: 'toggle',
+	    value: function toggle() {
+	      if (this._visible) {
+	        this.hide();
+	      } else {
+	        this.show();
+	      }
 	    }
 	  }, {
 	    key: '_resize',
