@@ -133,6 +133,7 @@ module.exports =
 	  dialog: '<div class="modal-dialog"></div>',
 	  content: '<div class="modal-content"></div>',
 	  header: '<div class="modal-header"></div>',
+	  headerClose: '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>',
 	  body: '<div class="modal-body"></div>',
 	  footer: '<div class="modal-footer"></div>',
 	  backdrop: '<div class="modal-backdrop"></div>'
@@ -233,6 +234,7 @@ module.exports =
 	        title: message,
 	        content: false,
 	        construct: true,
+	        headerClose: false,
 	        buttons: _buttons.alert
 	      }, _options);
 
@@ -247,6 +249,7 @@ module.exports =
 	        title: question,
 	        content: false,
 	        construct: true,
+	        headerClose: false,
 	        buttons: _buttons.confirm
 	      }, _options);
 
@@ -327,6 +330,7 @@ module.exports =
 	      html.dialog = build(t.dialog);
 	      html.content = build(t.content);
 	      html.header = build(t.header);
+	      html.headerClose = build(t.headerClose);
 	      html.body = build(t.body);
 	      html.footer = build(t.footer);
 	      if (animate) html.container.classList.add(animate);
@@ -356,6 +360,7 @@ module.exports =
 	      html.dialog = this.el.querySelector('.modal-dialog');
 	      html.content = this.el.querySelector('.modal-content');
 	      html.header = this.el.querySelector('.modal-header');
+	      html.headerClose = this.el.querySelector('.modal-header .close');
 	      html.body = this.el.querySelector('.modal-body');
 	      html.footer = this.el.querySelector('.modal-footer');
 
@@ -376,6 +381,10 @@ module.exports =
 	          html.header.innerHTML = o.title.outerHTML;
 	        } else if (typeof o.title === 'string') {
 	          html.header.innerHTML = '<h4 class="modal-title">' + o.title + '</h4>';
+	        }
+	        // Add header close button only to constructed modals.
+	        if (this.el === null && html.headerClose && o.headerClose) {
+	          html.header.insertBefore(html.headerClose, html.header.firstChild);
 	        }
 	        html.content.appendChild(html.header);
 	      }
