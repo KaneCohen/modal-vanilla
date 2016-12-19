@@ -1,6 +1,6 @@
 {
   "name": "modal-vanilla",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Vanilla JS Modal compatible with Bootstrap",
   "keywords": ["modal", "popup", "vanilla", "bootstrap"],
   "author": {
