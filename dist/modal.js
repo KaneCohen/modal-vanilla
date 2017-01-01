@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.3.5 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.3.6 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -415,12 +415,11 @@ module.exports =
 	      var o = this._options;
 
 	      if (o.footer && html.footer) {
-	        html.footer.innerHTML = '';
 	        if (o.footer.nodeName) {
 	          html.footer.ineerHTML = o.footer.outerHTML;
 	        } else if (typeof o.footer === 'string') {
 	          html.footer.innerHTML = o.footer;
-	        } else {
+	        } else if (!html.footer.children.length) {
 	          o.buttons.forEach(function (button) {
 	            var el = document.createElement('button');
 	            data(el, 'button', button);
