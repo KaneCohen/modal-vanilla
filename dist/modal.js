@@ -47,7 +47,7 @@ module.exports =
 
 	/**
 	 * Vanilla JS Modal compatible with Bootstrap
-	 * modal-vanilla 0.3.6 <https://github.com/KaneCohen/modal-vanilla>
+	 * modal-vanilla 0.3.7 <https://github.com/KaneCohen/modal-vanilla>
 	 * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
 	 * Available under BSD-3-Clause license
 	 */
@@ -97,7 +97,7 @@ module.exports =
 	  dialog: [{ text: 'Cancel',
 	    value: false,
 	    attr: {
-	      'class': 'btn btn-flat btn-danger',
+	      'class': 'btn btn-default',
 	      'data-dismiss': 'modal'
 	    }
 	  }, { text: 'OK',
@@ -116,7 +116,7 @@ module.exports =
 	  confirm: [{ text: 'Cancel',
 	    value: false,
 	    attr: {
-	      'class': 'btn btn-danger',
+	      'class': 'btn btn-default',
 	      'data-dismiss': 'modal'
 	    }
 	  }, { text: 'OK',
@@ -235,7 +235,7 @@ module.exports =
 	        content: false,
 	        construct: true,
 	        headerClose: false,
-	        buttons: _buttons.alert
+	        buttons: Modal.buttons.alert
 	      }, _options);
 
 	      return new Modal(options);
@@ -250,30 +250,39 @@ module.exports =
 	        content: false,
 	        construct: true,
 	        headerClose: false,
-	        buttons: _buttons.confirm
+	        buttons: Modal.buttons.confirm
 	      }, _options);
 
 	      return new Modal(options);
 	    }
 	  }, {
 	    key: 'templates',
+	    set: function set(templates) {
+	      this._baseTemplates = templates;
+	    },
 	    get: function get() {
-	      return Object.assign({}, _templates);
+	      return Object.assign({}, _templates, Modal._baseTemplates);
 	    }
 	  }, {
 	    key: 'buttons',
+	    set: function set(buttons) {
+	      this._baseButtons = buttons;
+	    },
 	    get: function get() {
-	      return Object.assign({}, _buttons);
+	      return Object.assign({}, _buttons, Modal._baseButtons);
 	    }
 	  }, {
 	    key: 'options',
+	    set: function set(options) {
+	      this._baseOptions = options;
+	    },
 	    get: function get() {
-	      return Object.assign({}, _defaults);
+	      return Object.assign({}, _defaults, Modal._baseOptions);
 	    }
 	  }, {
 	    key: 'version',
 	    get: function get() {
-	      return '0.3.1';
+	      return '0.3.7';
 	    }
 	  }]);
 
