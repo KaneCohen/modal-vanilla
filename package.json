@@ -1,8 +1,13 @@
 {
   "name": "modal-vanilla",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Vanilla JS Modal compatible with Bootstrap",
-  "keywords": ["modal", "popup", "vanilla", "bootstrap"],
+  "keywords": [
+    "modal",
+    "popup",
+    "vanilla",
+    "bootstrap"
+  ],
   "author": {
     "name": "Kane Cohen",
     "email": "kanecohen@gmail.com"
@@ -13,12 +18,15 @@
   },
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "babel": "5.8.23",
-    "babel-eslint": "4.1.7",
-    "babel-loader": "5.1.4",
-    "eslint": "1.10.3",
-    "eslint-loader": "1.2.0",
-    "webpack": "1.12.11"
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.0.3",
+    "babel-loader": "7.1.2",
+    "babel-runtime": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-plugin-transform-object-assign": "6.22.0",
+    "eslint": "4.13.0",
+    "eslint-loader": "1.9.0",
+    "webpack": "3.10.0"
   },
   "scripts": {
     "lint": "eslint lib",

@@ -7,6 +7,7 @@ var targets = [
     output: {
       path: __dirname + '/dist',
       filename: 'modal.min.js',
+      libraryTarget: 'var',
       library: 'Modal'
     },
     plugins: [
@@ -24,14 +25,13 @@ var targets = [
 ];
 
 var baseConfig = {
-  debug: false,
   entry: './lib/modal',
   module: {
     loaders: [
       {
         test: /\.js$/,
         include: path.join(__dirname, 'lib'),
-        loaders: ['babel', 'eslint']
+        loaders: ['babel-loader', 'eslint-loader']
       }
     ]
   }

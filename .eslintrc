@@ -6,9 +6,6 @@
     "browser": true,
     "node": true
   },
-  "ecmaFeatures": {
-    "modules": true
-  },
   "rules": {
     "quotes": 0,
     "no-console": 1,
