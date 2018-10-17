@@ -107,7 +107,7 @@ myModal.hide();
 Modal Vanilla uses standard node.js EventEmitter and therefore supports such  
 event as: 'on', 'once', 'removeAllListeners', 'removeListener'.
 
-For more details on EventEmitter, please check official [https://nodejs.org/api/events.html](documentaion page).  
+For more details on EventEmitter, please check official [documentation page](https://nodejs.org/api/events.html).  
 Available events are:
 
 | Event Type | Description |
