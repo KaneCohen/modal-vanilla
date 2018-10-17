@@ -81,7 +81,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.4.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.5.0 <https://github.com/KaneCohen/modal-vanilla>
                                                                                                                                                                                                                                                                                * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
@@ -107,6 +107,7 @@ var _defaults = Object.freeze({
   el: null, // Existing DOM element that will be 'Modal-ized'.
   animate: true, // Show Modal using animation.
   animateClass: 'fade', //
+  animateInClass: 'show', //
   appendTo: 'body', // DOM element to which constructed Modal will be appended.
   backdrop: true, // Boolean or 'static', Show Modal backdrop bocking content.
   keyboard: true, // Close modal on esc key.
@@ -310,7 +311,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.4.0';
+      return '0.5.0';
     }
   }]);
 
@@ -554,7 +555,7 @@ var Modal = function (_EventEmitter) {
 
         if (o.animate) html.container.offsetWidth; // Force reflow
 
-        html.container.classList.add('in');
+        html.container.classList.add(o.animateInClass);
 
         setTimeout(function () {
           _this3._visible = true;
@@ -601,7 +602,7 @@ var Modal = function (_EventEmitter) {
 
       if (animate) html.backdrop.offsetWidth;
 
-      html.backdrop.classList.add('in');
+      html.backdrop.classList.add(o.animateInClass);
 
       setTimeout(function () {
         _this4.emit('showBackdrop', _this4);
@@ -618,8 +619,8 @@ var Modal = function (_EventEmitter) {
       var contCList = html.container.classList;
       this.emit('hide', this);
 
-      backCList.remove('in');
-      contCList.remove('in');
+      backCList.remove(o.animateInClass);
+      contCList.remove(o.animateInClass);
 
       this._removeEvents();
 
