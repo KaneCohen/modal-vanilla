@@ -32,6 +32,5 @@
     "lint": "eslint lib",
     "build": "node webpack.config.js",
     "prepublish": "npm run build"
-  },
-  "main": "dist/modal.js"
+  }
 }
