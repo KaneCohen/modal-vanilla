@@ -68,6 +68,13 @@ module.exports =
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(1).default;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -81,13 +88,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.6.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.6.2 <https://github.com/KaneCohen/modal-vanilla>
                                                                                                                                                                                                                                                                                * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
 
 
-var _events = __webpack_require__(1);
+var _events = __webpack_require__(2);
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -311,7 +318,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.6.0';
+      return '0.6.2';
     }
   }]);
 
@@ -676,10 +683,8 @@ var Modal = function (_EventEmitter) {
 
 exports.default = Modal;
 
-module.exports = Modal;
-
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");

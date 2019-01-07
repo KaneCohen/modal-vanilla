@@ -25,7 +25,7 @@ var targets = [
 ];
 
 var baseConfig = {
-  entry: './lib/modal',
+  entry: './index.js',
   module: {
     loaders: [
       {
