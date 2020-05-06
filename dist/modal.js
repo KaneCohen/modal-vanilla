@@ -88,8 +88,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.7.0 <https://github.com/KaneCohen/modal-vanilla>
-                                                                                                                                                                                                                                                                               * Copyright 2016 Kane Cohen <https://github.com/KaneCohen>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.8.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * Copyright 2020 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
 
@@ -116,7 +116,7 @@ var _defaults = Object.freeze({
   animateClass: 'fade', //
   animateInClass: 'show', //
   appendTo: 'body', // DOM element to which constructed Modal will be appended.
-  backdrop: true, // Boolean or 'static', Show Modal backdrop bocking content.
+  backdrop: true, // Boolean or 'static', Show Modal backdrop blocking content.
   keyboard: true, // Close modal on esc key.
   title: false, // Content of the title in the constructed dialog.
   header: true, // Show header content.
@@ -318,7 +318,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.7.0';
+      return '0.8.0';
     }
   }]);
 
@@ -488,10 +488,8 @@ var Modal = function (_EventEmitter) {
       var o = this._options;
       var html = this._html;
 
-      if (o.backdrop === true) {
-        this._events.keydownHandler = this._handleKeydownEvent.bind(this);
-        document.body.addEventListener('keydown', this._events.keydownHandler);
-      }
+      this._events.keydownHandler = this._handleKeydownEvent.bind(this);
+      document.body.addEventListener('keydown', this._events.keydownHandler);
 
       this._events.clickHandler = this._handleClickEvent.bind(this);
       html.container.addEventListener('click', this._events.clickHandler);
@@ -507,6 +505,9 @@ var Modal = function (_EventEmitter) {
       var path = getPath(e.target);
       path.every(function (node) {
         if (node.tagName === 'HTML') {
+          return false;
+        }
+        if (_this2._options.backdrop !== true && node.classList.contains('modal')) {
           return false;
         }
         if (node.classList.contains('modal-content')) {
@@ -528,7 +529,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: '_handleKeydownEvent',
     value: function _handleKeydownEvent(e) {
-      if (e.which === 27) {
+      if (e.which === 27 && this._options.keyboard) {
         this.emit('dismiss', this, e, null);
         this.hide();
       }
@@ -558,8 +559,22 @@ var Modal = function (_EventEmitter) {
       html.container.style.display = 'block';
       html.container.scrollTop = 0;
 
-      this.once('showBackdrop', function () {
-        _this3._setEvents();
+      if (o.backdrop !== false) {
+        this.once('showBackdrop', function () {
+          _this3._setEvents();
+
+          if (o.animate) html.container.offsetWidth; // Force reflow
+
+          html.container.classList.add(o.animateInClass);
+
+          setTimeout(function () {
+            _this3._visible = true;
+            _this3.emit('shown', _this3);
+          }, o.transition);
+        });
+        this._backdrop();
+      } else {
+        this._setEvents();
 
         if (o.animate) html.container.offsetWidth; // Force reflow
 
@@ -569,9 +584,7 @@ var Modal = function (_EventEmitter) {
           _this3._visible = true;
           _this3.emit('shown', _this3);
         }, o.transition);
-      });
-
-      this._backdrop();
+      }
       this._resize();
 
       return this;
@@ -623,12 +636,15 @@ var Modal = function (_EventEmitter) {
 
       var html = this._html;
       var o = this._options;
-      var backCList = html.backdrop.classList;
       var contCList = html.container.classList;
       this.emit('hide', this);
 
-      backCList.remove(o.animateInClass);
       contCList.remove(o.animateInClass);
+
+      if (o.backdrop) {
+        var backCList = html.backdrop.classList;
+        backCList.remove(o.animateInClass);
+      }
 
       this._removeEvents();
 
@@ -638,7 +654,9 @@ var Modal = function (_EventEmitter) {
       }, o.backdropTransition);
 
       setTimeout(function () {
-        html.backdrop.parentNode.removeChild(html.backdrop);
+        if (o.backdrop) {
+          html.backdrop.parentNode.removeChild(html.backdrop);
+        }
         html.container.style.display = 'none';
 
         if (o.construct) {
