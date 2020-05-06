@@ -504,6 +504,7 @@ var Modal = function (_EventEmitter) {
     value: function _handleClickEvent(e) {
       var _this2 = this;
 
+      var o = this._options;
       var path = getPath(e.target);
       path.every(function (node) {
         if (node.tagName === 'HTML') {
@@ -517,10 +518,12 @@ var Modal = function (_EventEmitter) {
           _this2.hide();
           return false;
         }
-        if (node.classList.contains('modal')) {
-          _this2.emit('dismiss', _this2, e, null);
-          _this2.hide();
-          return false;
+        if (o.backdrop === true) {
+          if (node.classList.contains('modal')) {
+            _this2.emit('dismiss', _this2, e, null);
+            _this2.hide();
+            return false;
+          }
         }
         return true;
       });
@@ -604,14 +607,16 @@ var Modal = function (_EventEmitter) {
       var o = this._options;
       var animate = o.animate ? o.animateClass : false;
 
-      html.backdrop = build(t.backdrop);
-      if (animate) html.backdrop.classList.add(animate);
-      html.appendTo.appendChild(html.backdrop);
+      if (o.backdrop) {
 
-      if (animate) html.backdrop.offsetWidth;
+        html.backdrop = build(t.backdrop);
+        if (animate) html.backdrop.classList.add(animate);
+        html.appendTo.appendChild(html.backdrop);
 
-      html.backdrop.classList.add(o.animateInClass);
+        if (animate) html.backdrop.offsetWidth;
 
+        html.backdrop.classList.add(o.animateInClass);
+      }
       setTimeout(function () {
         _this4.emit('showBackdrop', _this4);
       }, this._options.backdropTransition);
@@ -623,22 +628,25 @@ var Modal = function (_EventEmitter) {
 
       var html = this._html;
       var o = this._options;
-      var backCList = html.backdrop.classList;
       var contCList = html.container.classList;
       this.emit('hide', this);
-
-      backCList.remove(o.animateInClass);
       contCList.remove(o.animateInClass);
 
       this._removeEvents();
 
-      setTimeout(function () {
-        document.body.classList.remove('modal-open');
-        document.body.style.paddingRight = _this5.originalBodyPad;
-      }, o.backdropTransition);
+      if (o.backdrop) {
+        var backCList = html.backdrop.classList;
+        backCList.remove(o.animateInClass);
+        setTimeout(function () {
+          document.body.classList.remove('modal-open');
+          document.body.style.paddingRight = _this5.originalBodyPad;
+        }, o.backdropTransition);
+      }
 
       setTimeout(function () {
-        html.backdrop.parentNode.removeChild(html.backdrop);
+        if (o.backdrop) {
+          html.backdrop.parentNode.removeChild(html.backdrop);
+        }
         html.container.style.display = 'none';
 
         if (o.construct) {
