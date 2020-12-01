@@ -88,7 +88,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.8.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.9.0 <https://github.com/KaneCohen/modal-vanilla>
                                                                                                                                                                                                                                                                                * Copyright 2020 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
@@ -107,8 +107,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _factory = document.createElement('div');
-
-var _scrollbarWidth = calcScrollbarWidth();
 
 var _defaults = Object.freeze({
   el: null, // Existing DOM element that will be 'Modal-ized'.
@@ -318,7 +316,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.8.0';
+      return '0.9.0';
     }
   }]);
 
@@ -337,6 +335,7 @@ var Modal = function (_EventEmitter) {
     _this._options = _extends({}, Modal.options, options);
     _this._templates = _extends({}, Modal.templates, options.templates || {});
     _this._html.appendTo = document.querySelector(_this._options.appendTo);
+    _this._scrollbarWidth = calcScrollbarWidth();
 
     if (_this._options.buttons === null) {
       _this._options.buttons = Modal.buttons.dialog;
@@ -603,9 +602,9 @@ var Modal = function (_EventEmitter) {
     value: function _resize() {
       var modalIsOverflowing = this._html.container.scrollHeight > document.documentElement.clientHeight;
 
-      this._html.container.style.paddingLeft = !this.bodyIsOverflowing && modalIsOverflowing ? _scrollbarWidth + 'px' : '';
+      this._html.container.style.paddingLeft = !this.bodyIsOverflowing && modalIsOverflowing ? this._scrollbarWidth + 'px' : '';
 
-      this._html.container.style.paddingRight = this.bodyIsOverflowing && !modalIsOverflowing ? _scrollbarWidth + 'px' : '';
+      this._html.container.style.paddingRight = this.bodyIsOverflowing && !modalIsOverflowing ? this._scrollbarWidth + 'px' : '';
     }
   }, {
     key: '_backdrop',
@@ -691,7 +690,7 @@ var Modal = function (_EventEmitter) {
       this.originalBodyPad = document.body.style.paddingRight || '';
       if (this.bodyIsOverflowing) {
         var basePadding = parseInt(this.originalBodyPad || 0, 10);
-        document.body.style.paddingRight = basePadding + _scrollbarWidth + 'px';
+        document.body.style.paddingRight = basePadding + this._scrollbarWidth + 'px';
       }
     }
   }]);
