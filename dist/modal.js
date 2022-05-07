@@ -88,7 +88,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.9.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.10.0 <https://github.com/KaneCohen/modal-vanilla>
                                                                                                                                                                                                                                                                                * Copyright 2020 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
@@ -316,7 +316,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.9.0';
+      return '0.10.0';
     }
   }]);
 
@@ -332,6 +332,7 @@ var Modal = function (_EventEmitter) {
     _this._html = {};
     _this._events = {};
     _this._visible = false;
+    _this._pointerInContent = false;
     _this._options = _extends({}, Modal.options, options);
     _this._templates = _extends({}, Modal.templates, options.templates || {});
     _this._html.appendTo = document.querySelector(_this._options.appendTo);
@@ -490,6 +491,9 @@ var Modal = function (_EventEmitter) {
       this._events.keydownHandler = this._handleKeydownEvent.bind(this);
       document.body.addEventListener('keydown', this._events.keydownHandler);
 
+      this._events.mousedownHandler = this._handleMousedownEvent.bind(this);
+      html.container.addEventListener('mousedown', this._events.mousedownHandler);
+
       this._events.clickHandler = this._handleClickEvent.bind(this);
       html.container.addEventListener('click', this._events.clickHandler);
 
@@ -497,33 +501,51 @@ var Modal = function (_EventEmitter) {
       window.addEventListener('resize', this._events.resizeHandler);
     }
   }, {
+    key: '_handleMousedownEvent',
+    value: function _handleMousedownEvent(e) {
+      var _this2 = this;
+
+      this._pointerInContent = false;
+      var path = getPath(e.target);
+      path.every(function (node) {
+        if (node.classList && node.classList.contains('modal-content')) {
+          _this2._pointerInContent = true;
+          return false;
+        }
+        return true;
+      });
+    }
+  }, {
     key: '_handleClickEvent',
     value: function _handleClickEvent(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       var path = getPath(e.target);
       path.every(function (node) {
         if (node.tagName === 'HTML') {
           return false;
         }
-        if (_this2._options.backdrop !== true && node.classList.contains('modal')) {
+        if (_this3._options.backdrop !== true && node.classList.contains('modal')) {
           return false;
         }
         if (node.classList.contains('modal-content')) {
           return false;
         }
         if (node.getAttribute('data-dismiss') === 'modal') {
-          _this2.emit('dismiss', _this2, e, data(e.target, 'button'));
-          _this2.hide();
+          _this3.emit('dismiss', _this3, e, data(e.target, 'button'));
+          _this3.hide();
           return false;
         }
-        if (node.classList.contains('modal')) {
-          _this2.emit('dismiss', _this2, e, null);
-          _this2.hide();
+
+        if (!_this3._pointerInContent && node.classList.contains('modal')) {
+          _this3.emit('dismiss', _this3, e, null);
+          _this3.hide();
           return false;
         }
         return true;
       });
+
+      this._pointerInContent = false;
     }
   }, {
     key: '_handleKeydownEvent',
@@ -541,7 +563,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'show',
     value: function show() {
-      var _this3 = this;
+      var _this4 = this;
 
       var o = this._options;
       var html = this._html;
@@ -560,15 +582,15 @@ var Modal = function (_EventEmitter) {
 
       if (o.backdrop !== false) {
         this.once('showBackdrop', function () {
-          _this3._setEvents();
+          _this4._setEvents();
 
           if (o.animate) html.container.offsetWidth; // Force reflow
 
           html.container.classList.add(o.animateInClass);
 
           setTimeout(function () {
-            _this3._visible = true;
-            _this3.emit('shown', _this3);
+            _this4._visible = true;
+            _this4.emit('shown', _this4);
           }, o.transition);
         });
         this._backdrop();
@@ -580,8 +602,8 @@ var Modal = function (_EventEmitter) {
         html.container.classList.add(o.animateInClass);
 
         setTimeout(function () {
-          _this3._visible = true;
-          _this3.emit('shown', _this3);
+          _this4._visible = true;
+          _this4.emit('shown', _this4);
         }, o.transition);
       }
       this._resize();
@@ -609,7 +631,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: '_backdrop',
     value: function _backdrop() {
-      var _this4 = this;
+      var _this5 = this;
 
       var html = this._html;
       var t = this._templates;
@@ -625,13 +647,13 @@ var Modal = function (_EventEmitter) {
       html.backdrop.classList.add(o.animateInClass);
 
       setTimeout(function () {
-        _this4.emit('showBackdrop', _this4);
+        _this5.emit('showBackdrop', _this5);
       }, this._options.backdropTransition);
     }
   }, {
     key: 'hide',
     value: function hide() {
-      var _this5 = this;
+      var _this6 = this;
 
       var html = this._html;
       var o = this._options;
@@ -649,7 +671,7 @@ var Modal = function (_EventEmitter) {
 
       setTimeout(function () {
         document.body.classList.remove('modal-open');
-        document.body.style.paddingRight = _this5.originalBodyPad;
+        document.body.style.paddingRight = _this6.originalBodyPad;
       }, o.backdropTransition);
 
       setTimeout(function () {
@@ -662,8 +684,8 @@ var Modal = function (_EventEmitter) {
           html.container.parentNode.removeChild(html.container);
         }
 
-        _this5._visible = false;
-        _this5.emit('hidden', _this5);
+        _this6._visible = false;
+        _this6.emit('hidden', _this6);
       }, o.transition);
 
       return this;
@@ -674,6 +696,8 @@ var Modal = function (_EventEmitter) {
       if (this._events.keydownHandler) {
         document.body.removeEventListener('keydown', this._events.keydownHandler);
       }
+
+      this._html.container.removeEventListener('mousedown', this._events.mousedownHandler);
 
       this._html.container.removeEventListener('click', this._events.clickHandler);
 
