@@ -491,7 +491,7 @@ var Modal = function (_EventEmitter) {
       document.body.addEventListener('keydown', this._events.keydownHandler);
 
       this._events.clickHandler = this._handleClickEvent.bind(this);
-      html.container.addEventListener('click', this._events.clickHandler);
+      html.container.addEventListener('pointerdown', this._events.clickHandler);
 
       this._events.resizeHandler = this._handleResizeEvent.bind(this);
       window.addEventListener('resize', this._events.resizeHandler);
@@ -500,6 +500,9 @@ var Modal = function (_EventEmitter) {
     key: '_handleClickEvent',
     value: function _handleClickEvent(e) {
       var _this2 = this;
+
+      // Only on left click
+      if (e.button !== 0) return true;
 
       var path = getPath(e.target);
       path.every(function (node) {
