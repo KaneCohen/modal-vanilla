@@ -88,7 +88,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
                                                                                                                                                                                                                                                                                * Vanilla JS Modal compatible with Bootstrap
-                                                                                                                                                                                                                                                                               * modal-vanilla 0.10.0 <https://github.com/KaneCohen/modal-vanilla>
+                                                                                                                                                                                                                                                                               * modal-vanilla 0.11.0 <https://github.com/KaneCohen/modal-vanilla>
                                                                                                                                                                                                                                                                                * Copyright 2020 Kane Cohen <https://github.com/KaneCohen>
                                                                                                                                                                                                                                                                                * Available under BSD-3-Clause license
                                                                                                                                                                                                                                                                                */
@@ -316,7 +316,7 @@ var Modal = function (_EventEmitter) {
   }, {
     key: 'version',
     get: function get() {
-      return '0.10.0';
+      return '0.11.0';
     }
   }]);
 
