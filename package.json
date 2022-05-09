@@ -1,6 +1,6 @@
 {
   "name": "modal-vanilla",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Vanilla JS Modal compatible with Bootstrap",
   "keywords": [
     "modal",
@@ -17,7 +17,8 @@
     "url": "https://github.com/KaneCohen/modal-vanilla.git"
   },
   "license": "BSD-3-Clause",
-  "type": "module",
+  "module": "lib/modal.js",
+  "main": "dist/modal.js",
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.3",
