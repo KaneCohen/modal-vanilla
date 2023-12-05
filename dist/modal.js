@@ -466,7 +466,7 @@ var Modal = function (_EventEmitter) {
 
       if (o.footer && html.footer) {
         if (o.footer.nodeName) {
-          html.footer.ineerHTML = o.footer.outerHTML;
+          html.footer.innerHTML = o.footer.outerHTML;
         } else if (typeof o.footer === 'string') {
           html.footer.innerHTML = o.footer;
         } else if (!html.footer.children.length) {
